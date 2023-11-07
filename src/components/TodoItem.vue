@@ -3,17 +3,22 @@ import { Icon } from "@iconify/vue";
 const props = defineProps({
   todo: {
     type: Object,
-    default: () => {},
+    required: true,
   },
+  index: {
+    type : Number,
+    required : true
+  }
 });
+defineEmits(['toggle-complete'])
 </script>
 
 <template>
   <li :key="todo.id">
-    <input type="checkbox" :value="todo.isCompleted" />
+    <input type="checkbox" :value="todo.isCompleted" @input="$emit('toggle-complete',index)"/>
     <div class="todo">
       <input v-if="todo.isEditing" type="text" :value="todo.todo" />
-      <span v-else>
+      <span v-else :class="{'completed-todo' : todo.isCompleted}">
         {{ todo.todo }}
       </span>
     </div>
@@ -84,6 +89,10 @@ li {
     .icon {
       cursor: pointer;
     }
+  }
+
+  .completed-todo{
+    text-decoration: line-through;
   }
 }
 </style>
