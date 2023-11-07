@@ -27,6 +27,10 @@ const toggleTodoEditing = (index) => {
 const updateTodo = (index,value) => {
   todoList.value[index].todo = value
 }
+
+const deleteTodo = (id) => {
+  todoList.value = todoList.value.filter((todo) => todo.id != id)
+}
 </script>
 
 <template>
@@ -34,7 +38,7 @@ const updateTodo = (index,value) => {
     <h1>Create Todo</h1>
     <TodoCreator @create-todo="createTodo"/>
     <ul class="todo-list" v-if="todoList.length > 0">
-      <TodoItem v-for="(todo,index) in todoList" :todo="todo" :index="index" :key="todo.id" @toggle-complete="toggleTodoComplete" @toggle-editing="toggleTodoEditing" @todo-data-update="updateTodo"/>
+      <TodoItem v-for="(todo,index) in todoList" :todo="todo" :index="index" :key="todo.id" @toggle-complete="toggleTodoComplete" @toggle-editing="toggleTodoEditing" @todo-data-update="updateTodo" @delete-todo="deleteTodo"/>
     </ul>
     <p v-else class="todos-msg">
       <Icon icon="noto-v1:sad-but-relieved-face" />
