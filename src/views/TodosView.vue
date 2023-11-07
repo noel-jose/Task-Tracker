@@ -1,11 +1,30 @@
 <script setup>
 import { Icon } from "@iconify/vue";
-import {ref} from "vue";
+import {ref, watch} from "vue";
 import {uid} from "uid"
 import TodoCreator from '../components/TodoCreator.vue';
 import TodoItem from "../components/TodoItem.vue";
 
 const todoList = ref([]);
+
+watch(todoList,()=>{
+  setTodoItems()
+},{
+  deep:true
+})
+
+const fetchTodoItems = () => {
+  const todoItems = JSON.parse(localStorage.getItem('todoList'));
+  if(todoItems){
+    todoList.value = todoItems
+  }
+}
+
+fetchTodoItems();
+
+const setTodoItems = () => {
+  localStorage.setItem('todoList',JSON.stringify(todoList.value))
+}
 
 const createTodo = (todo) => {
   todoList.value.push({
