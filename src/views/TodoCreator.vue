@@ -1,22 +1,26 @@
         
 <script setup>
-    import { ref,reactive } from 'vue';
-    const todo =  ref("testing")
+    import { ref,reactive,defineEmits } from 'vue';
+    const emit = defineEmits(['create-todo'])
+    const todo =  ref("")
     // to access value in ref in a script  we use todo.value
     // in the ref method we can only work with primitive data types
-    const todoState = reactive({
-        todo : "Testing"
-    })
+    // const todoState = reactive({
+    //     todo : "Testing"
+    // })
     // to access value of reactive element in the script we use
     // todoState.todo
     // in the reactive method we can work with not only primitive data
+
+    const createTodo = () => {
+        emit('create-todo',todo.value)
+    }
 </script>
 <template>
     <div class="input-wrap">
-        <input type="text" name="" id="" v-model="todoState.todo">
-        <button>Create</button>
+        <input type="text" name="" id="" v-model="todo">
+        <button @click="createTodo">Create</button>
     </div>
-    <p>{{todoState.todo}}</p>
 </template>
 
 <style lang="scss" scoped>
