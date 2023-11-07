@@ -1,6 +1,6 @@
 <script setup>
 import { Icon } from "@iconify/vue";
-import {ref, watch} from "vue";
+import {ref, watch,computed} from "vue";
 import {uid} from "uid"
 import TodoCreator from '../components/TodoCreator.vue';
 import TodoItem from "../components/TodoItem.vue";
@@ -11,6 +11,10 @@ watch(todoList,()=>{
   setTodoItems()
 },{
   deep:true
+})
+
+const allTodosCompleted = computed(()=>{
+  return todoList.value.every((todo)=> todo.isCompleted )
 })
 
 const fetchTodoItems = () => {
@@ -56,12 +60,16 @@ const deleteTodo = (id) => {
   <main>
     <h1>Create Todo</h1>
     <TodoCreator @create-todo="createTodo"/>
-    <ul class="todo-list" v-if="todoList.length > 0">
+    <ul class="todo-list" v-if='todoList.length > 0'>
       <TodoItem v-for="(todo,index) in todoList" :todo="todo" :index="index" :key="todo.id" @toggle-complete="toggleTodoComplete" @toggle-editing="toggleTodoEditing" @todo-data-update="updateTodo" @delete-todo="deleteTodo"/>
     </ul>
     <p v-else class="todos-msg">
       <Icon icon="noto-v1:sad-but-relieved-face" />
       <span>You have no todo's to complete! Add one!</span>
+    </p>
+    <p class="todos-msg" v-if="allTodosCompleted && todoList.length > 0">
+      <Icon icon="noto-v1:fireworks"  />
+      <span>You have completed all the todos</span>
     </p>
   </main>
 </template>
