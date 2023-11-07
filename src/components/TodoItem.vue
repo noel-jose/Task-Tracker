@@ -10,14 +10,14 @@ const props = defineProps({
     required : true
   }
 });
-defineEmits(['toggle-complete'])
+defineEmits(['toggle-complete','toggle-editing','todo-data-update'])
 </script>
 
 <template>
   <li :key="todo.id">
     <input type="checkbox" :value="todo.isCompleted" @input="$emit('toggle-complete',index)"/>
     <div class="todo">
-      <input v-if="todo.isEditing" type="text" :value="todo.todo" />
+      <input v-if="todo.isEditing" type="text" :value="todo.todo" @input="$emit('todo-data-update',index,$event.target.value)"/>
       <span v-else :class="{'completed-todo' : todo.isCompleted}">
         {{ todo.todo }}
       </span>
@@ -29,6 +29,8 @@ defineEmits(['toggle-complete'])
         class="icon check-icon"
         color="41b080"
         width="22"
+        @click="$emit('toggle-editing',index)"
+
       />
       <Icon
         v-else
@@ -36,6 +38,7 @@ defineEmits(['toggle-complete'])
         class="icon edit-icon"
         color="41b080"
         width="22"
+        @click="$emit('toggle-editing',index)"
       />
       <Icon icon="ph:trash" class="icon trash-icon" color="f95e5e" width="22" />
     </div>
